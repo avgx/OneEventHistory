@@ -1,0 +1,6 @@
+event: stream-data
+data: {"items":[{"body":{"guid":"g1","timestamp":"2026-01-01T00:00:00Z","state":"ACTIVE","origin_deprecated":"","event_type":"face","multi_phase_id":"","detectors_group":["FACE"],"details":[{"rectangle":{"x":1,"y":2,"w":3,"h":4,"index":0},"face_recognition_result":{"begin_time":"2026-01-01T00:00:00Z","best_quality":0.9,"evasion_type":"NONE","age":30,"gender":"MALE"},"object_id":42}],"data":{"DetectorsGroup":["FACE"],"FaceId":1,"Hypotheses":[{"id":"h1"}],"ObjectId":42,"detector_type":"face","origin_id":"hosts/H/Device/Source","phase":0,"rectangles":[[1,2,3,4]]}},"event_name":"Face","event_type":"face","external":false,"localization":{"text":"Face"},"required_permissions":{"required_object_permissions":[{"access_point":"ap","camera_access":"CAMERA_ACCESS_FULL"}]},"subject":"s","subjects":["s"]}]}
+
+event: end-of-stream
+data: {"items":[]}
+

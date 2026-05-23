@@ -1,0 +1,22 @@
+{
+  "method": "axxonsoft.bl.events.EventHistoryService.ReadEvents",
+  "data": {
+    "range": {
+      "begin_time": "2026-05-10T00:00:00Z",
+      "end_time": "2026-05-18T00:00:00Z"
+    },
+    "filters": {
+      "filters": [
+        {
+          "type": "event_type",
+          "subjects": [],
+          "values": [
+            "face"
+          ]
+        }
+      ]
+    },
+    "limit": 50,
+    "offset": 0
+  }
+}

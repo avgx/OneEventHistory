@@ -1,26 +1,51 @@
-// swift-tools-version: 6.2
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+// swift-tools-version: 6.1
 
 import PackageDescription
 
 let package = Package(
     name: "OneEventHistory",
+    defaultLocalization: "en",
+    platforms: [
+        .iOS(.v15),
+        .macOS(.v13),
+        .tvOS(.v17),
+        .visionOS(.v1),
+    ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "OneEventHistory",
             targets: ["OneEventHistory"]
         ),
     ],
+    dependencies: [
+        .package(url: "https://github.com/avgx/RequestResponse", from: "2.0.1"),
+        .package(url: "https://github.com/avgx/SafeEnum", from: "1.0.0"),
+        .package(url: "https://github.com/avgx/OneWireFormat", from: "1.0.0"),
+        .package(url: "https://github.com/avgx/JSONValue", from: "1.0.0"),
+        .package(url: "https://github.com/avgx/EncodeDecode", from: "1.0.5"),
+        .package(url: "https://github.com/avgx/Get", branch: "dev"),
+    ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "OneEventHistory"
+            name: "OneEventHistory",
+            dependencies: [
+                .product(name: "RequestResponse", package: "RequestResponse"),
+                .product(name: "SafeEnum", package: "SafeEnum"),
+                .product(name: "OneWireFormat", package: "OneWireFormat"),
+                .product(name: "JSONValue", package: "JSONValue"),
+            ]
         ),
         .testTarget(
             name: "OneEventHistoryTests",
-            dependencies: ["OneEventHistory"]
+            dependencies: [
+                "OneEventHistory",
+                .product(name: "RequestResponse", package: "RequestResponse"),
+                .product(name: "EncodeDecode", package: "EncodeDecode"),
+                .product(name: "HTTP", package: "Get"),
+            ],
+            resources: [
+                .process("Resources"),
+            ]
         ),
     ]
 )
