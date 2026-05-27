@@ -101,7 +101,3 @@ Sources/OneEventHistory/
   FindByPrompt/  request, page
   Error/         DetectorError
 ```
-
-## Production reference
-
-Face/image search patterns follow [axxonnext.webclient](https://github.com/avgx/axxonnext) (`faceSaga.ts`, `httpApi.ts`). Proto schema reference: [axxon-telegram-vms](https://github.com/jerrygergov/axxon-telegram-vms).
