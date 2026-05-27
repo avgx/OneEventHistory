@@ -1,4 +1,5 @@
 import Foundation
+import OneWireFormat
 import RequestResponse
 
 /// EventHistory API (Native BL `EventHistoryService` via `POST /grpc` + SSE).
