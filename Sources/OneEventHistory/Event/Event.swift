@@ -7,7 +7,7 @@ public struct Event: Decodable, Equatable, Sendable {
     public let eventType: String
     public let external: Bool
     public let localization: LocalizedText
-    public let requiredPermissions: RequiredPermissions
+    public let requiredPermissions: RequiredPermissions?
     public let subject: String
     public let subjects: [String]
 

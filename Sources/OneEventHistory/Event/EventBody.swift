@@ -7,14 +7,15 @@ import SafeEnum
 public struct EventBody: Decodable, Equatable, Sendable {
     public let guid: String
     public let timestamp: String
-    public let state: SafeEnum<EventState>
-    public let originDeprecated: String
+    public let state: SafeEnum<EventState>?
+    public let originDeprecated: String?
     public let originExt: JSONValue?
     public let detectorExt: JSONValue?
-    public let eventType: String
-    public let multiPhaseId: String
-    public let detectorsGroup: [String]
-    public let details: [Details]
+    public let camera: JSONValue?
+    public let eventType: String?
+    public let multiPhaseId: String?
+    public let detectorsGroup: [String]?
+    public let details: [Details]?
     public let data: EventData?
 
     private enum CodingKeys: String, CodingKey {
@@ -24,6 +25,7 @@ public struct EventBody: Decodable, Equatable, Sendable {
         case originDeprecated = "origin_deprecated"
         case originExt = "origin_ext"
         case detectorExt = "detector_ext"
+        case camera
         case eventType = "event_type"
         case multiPhaseId = "multi_phase_id"
         case detectorsGroup = "detectors_group"

@@ -4,7 +4,7 @@ import Foundation
 public struct Details: Decodable, Equatable, Sendable {
     public let rectangle: Rectangle?
     public let faceRecognitionResult: FaceRecognitionResult?
-    public let objectId: Int
+    public let objectId: Int?
 
     private enum CodingKeys: String, CodingKey {
         case rectangle
