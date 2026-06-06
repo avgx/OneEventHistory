@@ -21,4 +21,17 @@ public struct Event: Decodable, Equatable, Sendable {
         case subject
         case subjects
     }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        body = try container.decode(EventBody.self, forKey: .body)
+        eventName = try container.decodeIfPresent(String.self, forKey: .eventName) ?? ""
+        eventType = try container.decode(String.self, forKey: .eventType)
+        external = try container.decodeIfPresent(Bool.self, forKey: .external) ?? false
+        localization = try container.decodeIfPresent(LocalizedText.self, forKey: .localization)
+            ?? LocalizedText(text: "")
+        requiredPermissions = try container.decodeIfPresent(RequiredPermissions.self, forKey: .requiredPermissions)
+        subject = try container.decodeIfPresent(String.self, forKey: .subject) ?? ""
+        subjects = try container.decodeIfPresent([String].self, forKey: .subjects) ?? []
+    }
 }

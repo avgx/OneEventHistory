@@ -76,6 +76,38 @@ struct EventEnumDecodingTests {
         #expect(data.objectId == 1)
     }
 
+    @Test("EventData decodes FaceId UUID from try.axxonsoft.com")
+    func eventDataFaceIdUUID() throws {
+        let json = """
+        {
+          "phase": 0,
+          "FaceId": "143e76cc-d5b0-4329-b2c1-8b82df003a6d",
+          "ObjectId": 13921182,
+          "origin_id": "hosts/Demoserver/DeviceIpint.1/SourceEndpoint.video:0:0",
+          "Hypotheses": [null],
+          "rectangles": [[0.30416666666666664, 0.20555555555555555, 0.3770833333333333, 0.3935185185185185, 13921182]],
+          "detector_type": "faceAppeared",
+          "DetectorsGroup": ["FaceDetector", "PrivacyDetector"]
+        }
+        """
+        let data = try JSONDecoder().decode(EventData.self, from: Data(json.utf8))
+        #expect(data.faceId == "143e76cc-d5b0-4329-b2c1-8b82df003a6d")
+    }
+
+    @Test("EventData decodes legacy integer FaceId")
+    func eventDataFaceIdInt() throws {
+        let json = """
+        {
+          "FaceId": 456,
+          "ObjectId": 123,
+          "detector_type": "face",
+          "phase": 0
+        }
+        """
+        let data = try JSONDecoder().decode(EventData.self, from: Data(json.utf8))
+        #expect(data.faceId == "456")
+    }
+
     @Test("EventBody decodes MacroEvent shape without detector fields")
     func eventBodyMacroEventShape() throws {
         let json = """

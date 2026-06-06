@@ -8,6 +8,8 @@ import RequestResponse
 public enum EventHistoryApi {
     public static let readEventsMethod = "axxonsoft.bl.events.EventHistoryService.ReadEvents"
     public static let readAlertsMethod = "axxonsoft.bl.events.EventHistoryService.ReadAlerts"
+    public static let readBookmarksMethod = "axxonsoft.bl.events.EventHistoryService.ReadBookmarks"
+    public static let readTextEventsMethod = "axxonsoft.bl.events.EventHistoryService.ReadTextEvents"
     public static let readLprEventsMethod = "axxonsoft.bl.events.EventHistoryService.ReadLprEvents"
     public static let findSimilarObjectsMethod = "axxonsoft.bl.events.EventHistoryService.FindSimilarObjects"
     public static let findSimilarObjects2Method = "axxonsoft.bl.events.EventHistoryService.FindSimilarObjects2"
@@ -47,6 +49,20 @@ public enum EventHistoryApi {
     /// Endpoint: `POST /grpc` → `EventHistoryService.ReadAlerts`
     public static func readAlerts(_ body: ReadAlertsRequest) -> Request<PagedResponse<ReadAlertsPage>> {
         grpc(method: readAlertsMethod, data: body)
+    }
+
+    // MARK: - ReadBookmarks
+
+    /// Endpoint: `POST /grpc` → `EventHistoryService.ReadBookmarks`
+    public static func readBookmarks(_ body: ReadBookmarksRequest) -> Request<PagedResponse<ReadBookmarksPage>> {
+        grpc(method: readBookmarksMethod, data: body)
+    }
+
+    // MARK: - ReadTextEvents
+
+    /// Endpoint: `POST /grpc` → `EventHistoryService.ReadTextEvents`
+    public static func readTextEvents(_ body: ReadTextEventsRequest) -> Request<PagedResponse<ReadTextEventsPage>> {
+        grpc(method: readTextEventsMethod, data: body)
     }
 
     // MARK: - ReadLprEvents

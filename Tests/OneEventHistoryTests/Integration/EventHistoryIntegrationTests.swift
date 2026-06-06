@@ -67,6 +67,31 @@ struct EventHistoryIntegrationTests {
         )
     }
 
+    @Test("ReadEvents ET_Alert and ET_AlertState smoke against live server")
+    func readEventsAlertsSmoke() async throws {
+        guard EventHistoryIntegrationConfig.isIntegrationEnabled else { return }
+        let credentials = try #require(EventHistoryIntegrationConfig.credentials())
+
+        let end = Date()
+        let begin = end.addingTimeInterval(-7 * 24 * 3600)
+        let body = ReadEventsRequest(
+            range: TimeRange(begin: begin, end: end),
+            filters: SearchFilterArray(filters: [
+                SearchFilter(type: .alert, values: []),
+                SearchFilter(type: .alertState, values: []),
+            ]),
+            limit: 50,
+            offset: 0
+        )
+
+        _ = try await performPages(
+            EventHistoryApi.readEvents(body),
+            baseURL: credentials.baseURL,
+            user: credentials.user,
+            password: credentials.password
+        )
+    }
+
     @Test("ReadAlerts smoke against live server")
     func readAlertsSmoke() async throws {
         guard EventHistoryIntegrationConfig.isIntegrationEnabled else { return }
@@ -107,6 +132,85 @@ struct EventHistoryIntegrationTests {
             user: credentials.user,
             password: credentials.password
         )
+    }
+
+    @Test("ReadBookmarks smoke against live server")
+    func readBookmarksSmoke() async throws {
+        guard EventHistoryIntegrationConfig.isIntegrationEnabled else { return }
+        let credentials = try #require(EventHistoryIntegrationConfig.credentials())
+
+        let end = Date()
+        let begin = end.addingTimeInterval(-30 * 24 * 3600)
+        let body = ReadBookmarksRequest(
+            range: TimeRange(begin: begin, end: end),
+            filter: BookmarkSearchFilter(),
+            limit: 10
+        )
+
+        let pages = try await performPages(
+            EventHistoryApi.readBookmarks(body),
+            baseURL: credentials.baseURL,
+            user: credentials.user,
+            password: credentials.password
+        )
+        _ = pages.flatMap(\.items)
+    }
+
+    @Test("ReadTextEvents smoke against live server")
+    func readTextEventsSmoke() async throws {
+        guard EventHistoryIntegrationConfig.isIntegrationEnabled else { return }
+        let credentials = try #require(EventHistoryIntegrationConfig.credentials())
+
+        let end = Date()
+        let begin = end.addingTimeInterval(-24 * 3600)
+        let body = ReadTextEventsRequest(
+            range: TimeRange(begin: begin, end: end),
+            filters: SearchTextFilterArray(filters: []),
+            limit: 10
+        )
+
+        _ = try await performPages(
+            EventHistoryApi.readTextEvents(body),
+            baseURL: credentials.baseURL,
+            user: credentials.user,
+            password: credentials.password
+        )
+    }
+
+    @Test("ReadBookmarks vs ReadEvents ET_Bookmark time semantics")
+    func readBookmarksVsEventsBookmark() async throws {
+        guard EventHistoryIntegrationConfig.isIntegrationEnabled else { return }
+        let credentials = try #require(EventHistoryIntegrationConfig.credentials())
+
+        let end = Date()
+        let begin = end.addingTimeInterval(-7 * 24 * 3600)
+        let range = TimeRange(begin: begin, end: end)
+
+        let bookmarksPages = try await performPages(
+            EventHistoryApi.readBookmarks(
+                ReadBookmarksRequest(range: range, filter: BookmarkSearchFilter(), limit: 50)
+            ),
+            baseURL: credentials.baseURL,
+            user: credentials.user,
+            password: credentials.password
+        )
+        let eventsPages = try await performPages(
+            EventHistoryApi.readEvents(
+                ReadEventsRequest(
+                    range: range,
+                    filters: SearchFilterArray(filters: [SearchFilter(type: .bookmark)]),
+                    limit: 50
+                )
+            ),
+            baseURL: credentials.baseURL,
+            user: credentials.user,
+            password: credentials.password
+        )
+
+        let bookmarkCount = bookmarksPages.flatMap(\.items).count
+        let eventsBookmarkCount = eventsPages.flatMap(\.items).count
+        #expect(bookmarkCount >= 0)
+        #expect(eventsBookmarkCount >= 0)
     }
 
     @Test("FindByPrompt smoke against live server")

@@ -35,6 +35,18 @@ struct EventHistoryApiTests {
                 filters: AlertsSearchFilterArray(filters: [])
             )
         )
+        let _: Request<PagedResponse<ReadBookmarksPage>> = EventHistoryApi.readBookmarks(
+            ReadBookmarksRequest(
+                range: range,
+                filter: BookmarkSearchFilter()
+            )
+        )
+        let _: Request<PagedResponse<ReadTextEventsPage>> = EventHistoryApi.readTextEvents(
+            ReadTextEventsRequest(
+                range: range,
+                filters: SearchTextFilterArray(filters: [])
+            )
+        )
         let _: Request<PagedResponse<ReadLprEventsPage>> = EventHistoryApi.readLprEvents(
             ReadLprEventsRequest(
                 range: range,
