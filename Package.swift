@@ -22,7 +22,6 @@ let package = Package(
         .package(url: "https://github.com/avgx/SafeEnum", from: "1.0.0"),
         .package(url: "https://github.com/avgx/JSONValue", from: "1.0.0"),
         .package(url: "https://github.com/avgx/EncodeDecode", from: "1.0.5"),
-        .package(url: "https://github.com/avgx/Get.git", from: "6.0.0"),
         .package(url: "https://github.com/avgx/OneWireFormat", from: "1.0.2"),
         .package(url: "https://github.com/avgx/OneDomain", from: "1.0.0"),
     ],
@@ -43,7 +42,6 @@ let package = Package(
                 "OneEventHistory",
                 .product(name: "RequestResponse", package: "RequestResponse"),
                 .product(name: "EncodeDecode", package: "EncodeDecode"),
-                .product(name: "HTTP", package: "Get"),
             ],
             resources: [
                 .process("Resources"),
