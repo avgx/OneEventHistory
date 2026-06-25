@@ -11,4 +11,11 @@ public struct ReadEventsPage: Decodable, Equatable, Sendable {
         case unreachableSubjects = "unreachable_subjects"
         case nextOffset = "next_offset"
     }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        items = try container.decode([Event].self, forKey: .items)
+        unreachableSubjects = try container.decodeIfPresent([String].self, forKey: .unreachableSubjects)
+        nextOffset = try EventHistoryNextOffset.decode(from: container, forKey: .nextOffset)
+    }
 }

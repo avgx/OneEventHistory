@@ -34,4 +34,14 @@ struct ReadEventsDecodingTests {
         #expect(items.first?.eventType == "face")
         #expect(items.first?.body.guid == "g1")
     }
+
+    @Test("decode next_offset when server sends a string")
+    func decodeStringNextOffset() throws {
+        let json = """
+        {"items":[],"next_offset":"50"}
+        """.data(using: .utf8)!
+        let page = try JSONDecoder().decode(ReadEventsPage.self, from: json)
+
+        #expect(page.nextOffset == 50)
+    }
 }
