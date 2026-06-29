@@ -1,7 +1,7 @@
 import Foundation
 import SafeEnum
 
-public struct FaceRecognitionResult: Decodable, Equatable, Sendable {
+public struct FaceRecognitionResult: Codable, Equatable, Sendable {
     public let beginTime: String
     public let bestQuality: Double
     public let evasionType: SafeEnum<EvasionType>

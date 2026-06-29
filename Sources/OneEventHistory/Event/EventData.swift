@@ -2,7 +2,7 @@ import Foundation
 import JSONValue
 
 /// Detector-specific event data payload.
-public struct EventData: Decodable, Equatable, Sendable {
+public struct EventData: Codable, Equatable, Sendable {
     public let detectorsGroup: [String]?
     /// Face identifier — servers may send an integer legacy id or a UUID string.
     public let faceId: String?
@@ -45,5 +45,17 @@ public struct EventData: Decodable, Equatable, Sendable {
             return String(intValue)
         }
         return nil
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(detectorsGroup, forKey: .detectorsGroup)
+        try container.encodeIfPresent(faceId, forKey: .faceId)
+        try container.encodeIfPresent(objectId, forKey: .objectId)
+        try container.encodeIfPresent(detectorType, forKey: .detectorType)
+        try container.encodeIfPresent(originId, forKey: .originId)
+        try container.encodeIfPresent(phase, forKey: .phase)
+        try container.encodeIfPresent(rectangles, forKey: .rectangles)
+        try container.encodeIfPresent(hypotheses, forKey: .hypotheses)
     }
 }

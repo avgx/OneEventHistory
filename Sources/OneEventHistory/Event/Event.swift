@@ -1,7 +1,7 @@
 import Foundation
 import JSONValue
 
-public struct Event: Decodable, Equatable, Sendable {
+public struct Event: Codable, Equatable, Sendable {
     public let body: EventBody
     public let eventName: String
     public let eventType: String
@@ -33,5 +33,17 @@ public struct Event: Decodable, Equatable, Sendable {
         requiredPermissions = try container.decodeIfPresent(RequiredPermissions.self, forKey: .requiredPermissions)
         subject = try container.decodeIfPresent(String.self, forKey: .subject) ?? ""
         subjects = try container.decodeIfPresent([String].self, forKey: .subjects) ?? []
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(body, forKey: .body)
+        try container.encode(eventName, forKey: .eventName)
+        try container.encode(eventType, forKey: .eventType)
+        try container.encode(external, forKey: .external)
+        try container.encode(localization, forKey: .localization)
+        try container.encodeIfPresent(requiredPermissions, forKey: .requiredPermissions)
+        try container.encode(subject, forKey: .subject)
+        try container.encode(subjects, forKey: .subjects)
     }
 }

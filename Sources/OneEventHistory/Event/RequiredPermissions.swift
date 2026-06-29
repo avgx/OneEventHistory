@@ -1,6 +1,6 @@
 import Foundation
 
-public struct RequiredPermissions: Decodable, Equatable, Sendable {
+public struct RequiredPermissions: Codable, Equatable, Sendable {
     public let requiredObjectPermissions: [RequiredObjectPermissions]
 
     private enum CodingKeys: String, CodingKey {

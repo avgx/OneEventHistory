@@ -1,6 +1,6 @@
 import Foundation
 
-public struct RequiredObjectPermissions: Decodable, Equatable, Sendable {
+public struct RequiredObjectPermissions: Codable, Equatable, Sendable {
     public let accessPoint: String
     public let cameraAccess: String?
     public let archiveAccess: String?

@@ -1,7 +1,7 @@
 import Foundation
 
 /// Optional per-detector details attached to an event body.
-public struct Details: Decodable, Equatable, Sendable {
+public struct Details: Codable, Equatable, Sendable {
     public let rectangle: Rectangle?
     public let faceRecognitionResult: FaceRecognitionResult?
     public let objectId: Int?

@@ -1,6 +1,6 @@
 import Foundation
 
-public struct LocalizedText: Decodable, Equatable, Sendable {
+public struct LocalizedText: Codable, Equatable, Sendable {
     public let text: String
 
     public init(text: String) {

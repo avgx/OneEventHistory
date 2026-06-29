@@ -4,7 +4,7 @@ import OneWireFormat
 import SafeEnum
 
 /// Event payload body returned by EventHistory list RPCs.
-public struct EventBody: Decodable, Equatable, Sendable {
+public struct EventBody: Codable, Equatable, Sendable {
     public let guid: String
     public let timestamp: String
     public let state: SafeEnum<EventState>?

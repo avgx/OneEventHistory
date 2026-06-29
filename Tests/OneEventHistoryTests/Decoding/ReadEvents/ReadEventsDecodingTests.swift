@@ -15,6 +15,18 @@ struct ReadEventsDecodingTests {
         #expect(page.items.first?.body.guid == "g1")
     }
 
+    @Test("encode and decode Event round-trip")
+    func eventCodableRoundTrip() throws {
+        let data = try FixtureLoader.data(named: "events", extension: "json")
+        let page = try JSONDecoder().decode(ReadEventsPage.self, from: data)
+        let event = try #require(page.items.first)
+
+        let encoded = try JSONEncoder().encode(event)
+        let decoded = try JSONDecoder().decode(Event.self, from: encoded)
+
+        #expect(decoded == event)
+    }
+
     @Test("decode events.json fixture")
     func decodeEventsFixture() throws {
         let data = try FixtureLoader.data(named: "events", extension: "json")
