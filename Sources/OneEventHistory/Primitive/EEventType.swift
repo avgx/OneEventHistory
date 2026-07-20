@@ -166,6 +166,7 @@ public enum EEventType: String, Codable, Equatable, Sendable, CaseIterable, Iden
         case .alert: "axxonsoft.bl.events.Alert"
         case .alertState: "axxonsoft.bl.events.AlertState"
         case .textEvent: "axxonsoft.bl.events.TextEvent"
+        case .audit: "axxonsoft.bl.events.AuditEvent"
         default: nil
         }
     }

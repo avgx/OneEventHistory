@@ -56,6 +56,21 @@ let pages: [ReadEventsPage] = try await http.pages(
 let events = pages.flatMap(\.items)
 ```
 
+### Audit events (`ET_Audit`)
+
+Filter audit journal entries with ``AuditEventType`` (`Events.proto`):
+
+```swift
+let body = ReadEventsRequest(
+    range: TimeRange(begin: begin, end: end),
+    filters: SearchFilterArray(filters: [
+        .audit(operations: [.userLogin, .userLogout, .cameraViewing]),
+    ])
+)
+```
+
+Use `.audit()` with empty operations to fetch all audit events. Inject viewing/PTZ audit records via **OneAudit** (`/v1/audit/inject*`).
+
 Use `HTTPClient.pages`, not `send`, for `Request<PagedResponse<…>>`.
 
 ### Dates
@@ -92,9 +107,9 @@ ONEEVENTHISTORY_TEST_INTEGRATION=1 swift test
 ```
 Sources/OneEventHistory/
   API/           EventHistoryApi, GrpcEnvelope
-  Primitive/     TimeRange, NodeDescription, EEventType, FieldFilter
+  Primitive/     TimeRange, NodeDescription, EEventType, AuditEventType, FieldFilter
   Event/         Event, EventBody, …
-  ReadEvents/    request, page, SearchFilter
+  ReadEvents/    request, page, SearchFilter (detector + audit helpers)
   ReadAlerts/    request, page, AlertsSearchFilter
   ReadLprEvents/ request, page, LprSearchFilter, VehicleSearchFilter
   FindSimilar/   request, page, SimilarObject, SimilarityQuery

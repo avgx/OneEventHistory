@@ -91,6 +91,25 @@ public extension SearchFilter {
     static func objectDescriptor(on origin: AccessPoint) -> SearchFilter {
         detectorEvent(origin: origin, eventValues: [.objectDescriptor])
     }
+
+    /// Audit events (`ET_Audit`) filtered by operation type (`AuditEvent.EAuditEventType`).
+    ///
+    /// `values` use proto enum names (e.g. `AE_USER_LOGIN`).
+    static func audit(
+        operations: [AuditEventType],
+        subjects: [AccessPoint] = []
+    ) -> SearchFilter {
+        SearchFilter(
+            type: .audit,
+            subjects: subjects,
+            values: operations.map(\.rawValue)
+        )
+    }
+
+    /// All audit events (`ET_Audit`), optionally scoped to subjects.
+    static func audit(subjects: [AccessPoint] = []) -> SearchFilter {
+        SearchFilter(type: .audit, subjects: subjects, values: [])
+    }
 }
 
 /// Known `values` entries for ``EEventType/detectorEvent`` filters.
