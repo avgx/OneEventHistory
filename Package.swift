@@ -42,6 +42,8 @@ let package = Package(
                 "OneEventHistory",
                 .product(name: "RequestResponse", package: "RequestResponse"),
                 .product(name: "EncodeDecode", package: "EncodeDecode"),
+                .product(name: "JSONValue", package: "JSONValue"),
+                .product(name: "SafeEnum", package: "SafeEnum"),
             ],
             resources: [
                 .process("Resources"),

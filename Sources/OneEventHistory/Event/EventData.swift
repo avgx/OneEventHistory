@@ -1,5 +1,6 @@
 import Foundation
 import JSONValue
+import SafeEnum
 
 /// Detector-specific event data payload.
 public struct EventData: Codable, Equatable, Sendable {
@@ -12,6 +13,14 @@ public struct EventData: Codable, Equatable, Sendable {
     public let phase: Int?
     public let rectangles: [[Double]]?
     public let hypotheses: [JSONValue]?
+    public let vehicleColor: String?
+    public let vehicleBrand: String?
+    public let vehicleModel: String?
+    /// Server ordinal. `36` is ``PlateType/privateVehicle``.
+    public let plateType: SafeEnum<PlateType>?
+    public let vehicleClass: SafeEnum<VehicleClass>?
+    public let direction: SafeEnum<Direction>?
+    public let headlights: SafeEnum<HeadlightsStatus>?
 
     private enum CodingKeys: String, CodingKey {
         case detectorsGroup = "DetectorsGroup"
@@ -22,6 +31,13 @@ public struct EventData: Codable, Equatable, Sendable {
         case phase
         case rectangles
         case hypotheses = "Hypotheses"
+        case vehicleColor = "VehicleColor"
+        case vehicleBrand = "VehicleBrand"
+        case vehicleModel = "VehicleModel"
+        case plateType = "PlateType"
+        case vehicleClass = "VehicleClass"
+        case direction = "Direction"
+        case headlights = "HeadlightsStatus"
     }
 
     public init(from decoder: Decoder) throws {
@@ -34,6 +50,13 @@ public struct EventData: Codable, Equatable, Sendable {
         phase = try container.decodeIfPresent(Int.self, forKey: .phase)
         rectangles = try container.decodeIfPresent([[Double]].self, forKey: .rectangles)
         hypotheses = try container.decodeIfPresent([JSONValue].self, forKey: .hypotheses)
+        vehicleColor = try container.decodeIfPresent(String.self, forKey: .vehicleColor)
+        vehicleBrand = try container.decodeIfPresent(String.self, forKey: .vehicleBrand)
+        vehicleModel = try container.decodeIfPresent(String.self, forKey: .vehicleModel)
+        plateType = try container.decodeIfPresent(SafeEnum<PlateType>.self, forKey: .plateType)
+        vehicleClass = try container.decodeIfPresent(SafeEnum<VehicleClass>.self, forKey: .vehicleClass)
+        direction = try container.decodeIfPresent(SafeEnum<Direction>.self, forKey: .direction)
+        headlights = try container.decodeIfPresent(SafeEnum<HeadlightsStatus>.self, forKey: .headlights)
     }
 
     private static func decodeFaceId(from container: KeyedDecodingContainer<CodingKeys>) -> String? {
@@ -57,5 +80,12 @@ public struct EventData: Codable, Equatable, Sendable {
         try container.encodeIfPresent(phase, forKey: .phase)
         try container.encodeIfPresent(rectangles, forKey: .rectangles)
         try container.encodeIfPresent(hypotheses, forKey: .hypotheses)
+        try container.encodeIfPresent(vehicleColor, forKey: .vehicleColor)
+        try container.encodeIfPresent(vehicleBrand, forKey: .vehicleBrand)
+        try container.encodeIfPresent(vehicleModel, forKey: .vehicleModel)
+        try container.encodeIfPresent(plateType, forKey: .plateType)
+        try container.encodeIfPresent(vehicleClass, forKey: .vehicleClass)
+        try container.encodeIfPresent(direction, forKey: .direction)
+        try container.encodeIfPresent(headlights, forKey: .headlights)
     }
 }
