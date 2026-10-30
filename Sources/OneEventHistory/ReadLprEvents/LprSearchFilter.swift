@@ -11,6 +11,23 @@ public struct LprSearchFilter: Codable, Equatable, Sendable {
         self.values = values
         self.texts = texts
     }
+
+    private enum CodingKeys: String, CodingKey {
+        case subjects
+        case values
+        case texts
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(subjects, forKey: .subjects)
+        if !values.isEmpty {
+            try container.encode(values, forKey: .values)
+        }
+        if let texts, !texts.isEmpty {
+            try container.encode(texts, forKey: .texts)
+        }
+    }
 }
 
 /// Wrapper for repeated ReadLprEvents filters (`LprSearchFilterArray`).
