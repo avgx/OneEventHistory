@@ -24,6 +24,7 @@ let package = Package(
         .package(url: "https://github.com/avgx/EncodeDecode", from: "1.0.5"),
         .package(url: "https://github.com/avgx/OneWireFormat", from: "1.0.2"),
         .package(url: "https://github.com/avgx/OneDomain", from: "1.0.0"),
+        .package(url: "https://github.com/avgx/Presentable.git", from: "1.1.0"),
     ],
     targets: [
         .target(
@@ -34,6 +35,7 @@ let package = Package(
                 .product(name: "OneWireFormat", package: "OneWireFormat"),
                 .product(name: "JSONValue", package: "JSONValue"),
                 .product(name: "OneDomain", package: "OneDomain"),
+                .product(name: "Presentable", package: "Presentable"),
             ]
         ),
         .testTarget(
@@ -44,6 +46,7 @@ let package = Package(
                 .product(name: "EncodeDecode", package: "EncodeDecode"),
                 .product(name: "JSONValue", package: "JSONValue"),
                 .product(name: "SafeEnum", package: "SafeEnum"),
+                .product(name: "Presentable", package: "Presentable"),
             ],
             resources: [
                 .process("Resources"),

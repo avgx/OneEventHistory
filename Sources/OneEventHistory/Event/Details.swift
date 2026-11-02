@@ -10,6 +10,13 @@ public struct Details: Codable, Equatable, Sendable {
     public let autoRecognitionResult: JSONValue?
     /// Raw `auto_recognition_result_ex` block.
     public let autoRecognitionResultEx: JSONValue?
+    /// Raw `listed_item_detected_result`. List names come only from this object.
+    public let listedItemDetectedResult: JSONValue?
+
+    public var listedItemBindings: [ListedItemBinding] {
+        guard let listedItemDetectedResult else { return [] }
+        return ListedItemBindingReader.bindings(from: listedItemDetectedResult)
+    }
 
     private enum CodingKeys: String, CodingKey {
         case rectangle
@@ -17,6 +24,7 @@ public struct Details: Codable, Equatable, Sendable {
         case objectId = "object_id"
         case autoRecognitionResult = "auto_recognition_result"
         case autoRecognitionResultEx = "auto_recognition_result_ex"
+        case listedItemDetectedResult = "listed_item_detected_result"
     }
 
     public init(from decoder: Decoder) throws {
@@ -26,6 +34,7 @@ public struct Details: Codable, Equatable, Sendable {
         objectId = try container.decodeIfPresent(Int.self, forKey: .objectId)
         autoRecognitionResult = try container.decodeIfPresent(JSONValue.self, forKey: .autoRecognitionResult)
         autoRecognitionResultEx = try container.decodeIfPresent(JSONValue.self, forKey: .autoRecognitionResultEx)
+        listedItemDetectedResult = try container.decodeIfPresent(JSONValue.self, forKey: .listedItemDetectedResult)
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -35,5 +44,6 @@ public struct Details: Codable, Equatable, Sendable {
         try container.encodeIfPresent(objectId, forKey: .objectId)
         try container.encodeIfPresent(autoRecognitionResult, forKey: .autoRecognitionResult)
         try container.encodeIfPresent(autoRecognitionResultEx, forKey: .autoRecognitionResultEx)
+        try container.encodeIfPresent(listedItemDetectedResult, forKey: .listedItemDetectedResult)
     }
 }
