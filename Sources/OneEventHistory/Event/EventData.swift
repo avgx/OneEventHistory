@@ -21,6 +21,7 @@ public struct EventData: Codable, Equatable, Sendable {
     public let vehicleClass: SafeEnum<VehicleClass>?
     public let direction: SafeEnum<Direction>?
     public let headlights: SafeEnum<HeadlightsStatus>?
+    public let vehiclePurpose: SafeEnum<VehiclePurpose>?
 
     private enum CodingKeys: String, CodingKey {
         case detectorsGroup = "DetectorsGroup"
@@ -38,6 +39,7 @@ public struct EventData: Codable, Equatable, Sendable {
         case vehicleClass = "VehicleClass"
         case direction = "Direction"
         case headlights = "HeadlightsStatus"
+        case vehiclePurpose = "VehiclePurpose"
     }
 
     public init(from decoder: Decoder) throws {
@@ -57,6 +59,7 @@ public struct EventData: Codable, Equatable, Sendable {
         vehicleClass = try container.decodeIfPresent(SafeEnum<VehicleClass>.self, forKey: .vehicleClass)
         direction = try container.decodeIfPresent(SafeEnum<Direction>.self, forKey: .direction)
         headlights = try container.decodeIfPresent(SafeEnum<HeadlightsStatus>.self, forKey: .headlights)
+        vehiclePurpose = try container.decodeIfPresent(SafeEnum<VehiclePurpose>.self, forKey: .vehiclePurpose)
     }
 
     private static func decodeFaceId(from container: KeyedDecodingContainer<CodingKeys>) -> String? {
@@ -87,5 +90,6 @@ public struct EventData: Codable, Equatable, Sendable {
         try container.encodeIfPresent(vehicleClass, forKey: .vehicleClass)
         try container.encodeIfPresent(direction, forKey: .direction)
         try container.encodeIfPresent(headlights, forKey: .headlights)
+        try container.encodeIfPresent(vehiclePurpose, forKey: .vehiclePurpose)
     }
 }

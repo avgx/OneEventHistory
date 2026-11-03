@@ -33,6 +33,16 @@ public enum Direction: Int, CaseIterable, Hashable, Sendable {
     case outgoing
 }
 
+/// Vehicle purpose. `0` is unknown and is not shown. `1` is fire trucks.
+///
+/// Wire names are the protobuf enum: `FireTrucks`, `Police`, `Ambulance`.
+public enum VehiclePurpose: Int, CaseIterable, Hashable, Sendable {
+    case unknown = 0
+    case fireTrucks
+    case police
+    case ambulance
+}
+
 /// Headlights. Not a boolean: `0` undefined, `1` enabled, `2` disabled.
 ///
 /// Display strings are in EventL10n, copied from VMS `StringResources` (`LPRSearchRuleView_VehicleHeadlights*`).

@@ -13,6 +13,13 @@ public struct RecognizedPlate: Equatable, Sendable {
     public let vehicleClass: VehicleClass?
     public let headlights: HeadlightsStatus?
     public let direction: Direction?
+    /// Plate region from the winning hypothesis (`PlateState`). Empty and unknown values are omitted.
+    public let plateState: String?
+    /// Vehicle purpose. `unknown` is omitted.
+    public let purpose: VehiclePurpose?
+    /// One measured speed for the event, kilometers per hour (`vehicle_speed_kmph`).
+    /// `0` means the detector did not recognize a speed and is omitted.
+    public let speedKmph: Double?
     /// Normalized plate rectangle. Arrays of four numbers are corners, not width and height.
     public let rectangle: PlateRectangle?
 
@@ -65,6 +72,14 @@ enum RecognizedPlateReader {
                 keys: ["direction", "Direction"],
                 hiding: .unknown
             ),
+            plateState: hypothesis.plateState ?? firstPlateState(in: sources),
+            purpose: WireEnum.first(
+                VehiclePurpose.self,
+                in: sources.map { (result: $0.result, data: $0.purpose) },
+                keys: ["vehicle_purpose", "VehiclePurpose"],
+                hiding: .unknown
+            ),
+            speedKmph: firstSpeed(in: sources),
             rectangle: hypothesis.rectangle
         )
     }
@@ -79,12 +94,14 @@ enum RecognizedPlateReader {
         var vehicleClass: SafeEnum<VehicleClass>?
         var direction: SafeEnum<Direction>?
         var headlights: SafeEnum<HeadlightsStatus>?
+        var purpose: SafeEnum<VehiclePurpose>?
     }
 
     private struct Hypothesis {
         var quality: Double
         var number: String
         var country: String?
+        var plateState: String?
         var rectangle: RecognizedPlate.PlateRectangle?
     }
 
@@ -110,7 +127,8 @@ enum RecognizedPlateReader {
                 plateType: data.plateType,
                 vehicleClass: data.vehicleClass,
                 direction: data.direction,
-                headlights: data.headlights
+                headlights: data.headlights,
+                purpose: data.vehiclePurpose
             ))
         }
         return sources
@@ -131,6 +149,7 @@ enum RecognizedPlateReader {
                 quality: quality,
                 number: number,
                 country: showable(value["country"]?.stringValue ?? value["PlateCountry"]?.stringValue),
+                plateState: showable(unwrappedString(value["plate_state"] ?? value["PlateState"])),
                 rectangle: rectangle(from: value["plate_rectangle"] ?? value["PlateRectangle"])
             )
             if best == nil || candidate.quality > best!.quality {
@@ -194,6 +213,35 @@ enum RecognizedPlateReader {
                 }
             }
         }
+        return nil
+    }
+
+    private static func firstPlateState(in sources: [Source]) -> String? {
+        for source in sources {
+            for value in source.hypotheses {
+                if let state = showable(unwrappedString(value["plate_state"] ?? value["PlateState"])) {
+                    return state
+                }
+            }
+        }
+        return nil
+    }
+
+    private static func firstSpeed(in sources: [Source]) -> Double? {
+        for source in sources {
+            guard let result = source.result else { continue }
+            for key in ["vehicle_speed_kmph", "VehicleSpeedKmph", "vehicle_speed", "VehicleSpeed"] {
+                guard let value = result[key], let speed = number(value), speed > 0 else { continue }
+                return speed
+            }
+        }
+        return nil
+    }
+
+    private static func number(_ value: JSONValue) -> Double? {
+        if let number = value.doubleValue { return number }
+        if let text = value.stringValue, let number = Double(text) { return number }
+        if let wrapped = value["value"] { return number(wrapped) }
         return nil
     }
 
